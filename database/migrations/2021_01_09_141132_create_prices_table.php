@@ -17,6 +17,7 @@ class CreatePricesTable extends Migration
             $table->bigIncrements('id');
             $table->enum('type', ['Solar', 'Pertalite', 'Pertamax', 'Pertamax Turbo']);
             $table->date('date');
+            $table->double('cost');
             $table->double('price');
             $table->timestamps();
         });

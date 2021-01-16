@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
+
+use App\Price;
+use App\Point;
+use App\Vehicle;
+use App\Transaction;
 
 class HomeController extends Controller
 {
@@ -23,6 +29,48 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        if (Auth::user()->role == 'admin') {
+          return $this->index_admin();
+        }elseif (Auth::user()->role == 'employee') {
+          return $this->index_admin();
+        }else {
+          return $this->index_member();
+        }
+    }
+
+    public function index_admin()
+    {
+        $prices = Price::orderBy('created_at', 'desc')->get();
+
+        return view('admin/index', compact('prices'));
+    }
+
+    public function index_employee()
+    {
+        $prices = [
+          'solar' => Price::where('type', 'Solar')->first()->price,
+          'pertalite' => Price::where('type', 'Pertalite')->first()->price,
+          'pertamax' => Price::where('type', 'Pertamax')->first()->price,
+          'pertamax_turbo' => Price::where('type', 'Pertamax Turbo')->first()->price
+        ];
+
+        return view('home', compact('prices'));
+    }
+
+    public function index_member()
+    {
+        $points = Point::where('user_id', Auth::user()->id)->sum('point');
+        $police_numbers = Vehicle::where('user_id', Auth::user()->id)->pluck('police_number')->toArray();
+        $transactions = Transaction::whereIn('police_number', $police_numbers)->get();
+
+        $motocycle = Vehicle::where('type', 'motocycle')
+                            ->where('user_id', Auth::user()->id)
+                            ->first();
+
+        $car = Vehicle::where('type', 'car')
+                      ->where('user_id', Auth::user()->id)
+                      ->first();
+
+        return view('members', compact('points', 'transactions', 'motocycle', 'car'));
     }
 }

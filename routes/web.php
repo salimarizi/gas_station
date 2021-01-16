@@ -11,10 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'FrontController@index');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('transactions/{type}', 'FrontController@transactions');
+Route::post('transactions', 'FrontController@store_transactions');
+Route::post('vehicles', 'VehicleController@store');
+Route::post('reviews', 'ReviewController@store');
+Route::resource('prices', 'PriceController');
