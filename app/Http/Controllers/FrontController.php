@@ -47,10 +47,10 @@ class FrontController extends Controller
         }
 
         $prices = [
-          'solar' => Price::where('type', 'Solar')->first()->price,
-          'pertalite' => Price::where('type', 'Pertalite')->first()->price,
-          'pertamax' => Price::where('type', 'Pertamax')->first()->price,
-          'pertamax_turbo' => Price::where('type', 'Pertamax Turbo')->first()->price
+          'solar' => Price::where('type', 'Solar')->orderBy('created_at', 'desc')->first()->price,
+          'pertalite' => Price::where('type', 'Pertalite')->orderBy('created_at', 'desc')->first()->price,
+          'pertamax' => Price::where('type', 'Pertamax')->orderBy('created_at', 'desc')->first()->price,
+          'pertamax_turbo' => Price::where('type', 'Pertamax Turbo')->orderBy('created_at', 'desc')->first()->price
         ];
 
         return view('welcome', compact('prices', 'best_employees'));
