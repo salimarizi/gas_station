@@ -214,7 +214,7 @@
                     <tr>
 
                         <td align="center" class="section-img">
-                            <a href="" style=" border-style: none !important; display: block; border: 0 !important;"><img src="assets/img/hero-bg.jpg" style="display: block; width: 590px;" width="590" border="0" alt="" /></a>
+                            <a href="" style=" border-style: none !important; display: block; border: 0 !important;"><img src="{!! asset('assets/img/hero-bg.jpg') !!}" style="display: block; width: 590px;" width="590" border="0" alt="" /></a>
                         </td>
                     </tr>
                     <tr>
@@ -452,14 +452,6 @@
 
                                 <tr>
                                     <td align="center">
-                                        <table align="center" border="0" cellpadding="0" cellspacing="0">
-                                            <tr>
-                                                <td align="center">
-                                                    <a style="font-size: 14px; font-family: 'Work Sans', Calibri, sans-serif; line-height: 24px;color: #5caad2; text-decoration: none;font-weight:bold;"
-                                                        href="{{UnsubscribeURL}}">UNSUBSCRIBE</a>
-                                                </td>
-                                            </tr>
-                                        </table>
                                     </td>
                                 </tr>
 

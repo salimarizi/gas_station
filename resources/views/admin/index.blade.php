@@ -25,6 +25,11 @@
       <div class="card-body">
         <div class="row">
           <div class="col-md-12">
+            <a href="{{ url('reminder') }}" class="btn btn-primary float-right"><i class="icofont-envelope"></i> Kirim Reminder</a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
             <canvas id="canvas"></canvas>
           </div>
         </div>
