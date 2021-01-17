@@ -95,7 +95,7 @@
             <div class="member-info">
               <h4>{{ $employee->name }}</h4>
               <span>{{ $employee->outlet->name }}</span>
-              <p>Dengan perolehan poin sebesar {{ $employee->point }}</p>
+              <p>Dengan perolehan poin sebesar {{ $employee->point }}/5</p>
               <div class="social">
                 <a href=""><i class="ri-twitter-fill"></i></a>
                 <a href=""><i class="ri-facebook-fill"></i></a>

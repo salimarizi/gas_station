@@ -102,6 +102,26 @@
     <!-- end Popup Section-->
 
     <!-- ======= Popup Section ======= -->
+    <section id="modal_car" class="popup-graybox">
+      <div class="ebook-popup-sec" style="background: linear-gradient(rgba(246, 176, 36, 0.6), rgba(232, 218, 95, 0.6)), url(assets/img/hero-bg.jpg) fixed center center; background-size: cover; background-color: #0b2e13;" >
+        <h2 data-edit="text" style="font-family: Poppins; color: #05579E">Form Mobil</h2>
+  <!--      <h3 data-edit="text">Subscribe to our email newsletter and get updates on the latest tech tutorials and special offers!</h3>-->
+        <div class="ebook-email-sec">
+          <form action="{{ url('vehicles') }}" method="post">
+            @csrf
+            <input type="hidden" name="type" value="car">
+            <input type="text" name="name" class="ebookemail-input1" data-edit="placeholder" placeholder="Nama Mobil" value="{{ @$car->name }}">
+            <input type="text" name="police_number" class="ebookemail-input2" data-edit="placeholder" placeholder="Plat Nomor" value="{{ @$car->police_number }}">
+            <button class="ebook-input-btn" type="submit" style="font-family: Poppins">Simpan Data Mobil</button>
+          </form>
+          <button class="ebook-cls-btn close-btn">X</button>
+        </div>
+      </div>
+    </section>
+    <!-- end Popup Section-->
+
+
+    <!-- ======= Popup Section ======= -->
     <section id="modal_review" class="popup-graybox">
       <div class="ebook-popup-sec" style="background: white; padding-bottom: 20px">
         <h4 style="color: black">Form Review</h4>

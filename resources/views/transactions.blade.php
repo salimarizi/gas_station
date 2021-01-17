@@ -25,17 +25,20 @@
       </div>
 
       <div class="portfolio-info" style="border-radius: 15px">
-        <img src="{!! asset('assets/img/product/pertamax.png') !!}" style="width: 250px; height: 100%;">
+        @if ($type == 'pertamax')
+          <img src="{!! asset('assets/img/product/pertamax.png') !!}" style="width: 250px; height: 100%;">
+        @elseif ($type == 'pertamax_turbo')
+          <img src="{!! asset('assets/img/product/pertamaxturbo.png') !!}" style="width: 250px; height: 100%;">
+        @elseif ($type == 'pertalite')
+          <img src="{!! asset('assets/img/product/pertalite.png') !!}" style="width: 250px; height: 100%;">
+        @elseif ($type == 'solar')
+          <img src="{!! asset('assets/img/product/biosolar.png') !!}" style="width: 250px; height: 100%;">
+        @endif
         <table border="0" style="margin: auto">
           <tr>
             <td><strong>Nama Produk</strong></td>
             <td>&nbsp;&nbsp;:&nbsp;</td>
             <td>&nbsp;{{ $price->type }}</td>
-          </tr>
-          <tr>
-          <td><strong>Poin Member</strong></td>
-          <td>&nbsp;&nbsp;:&nbsp;</td>
-          <td>&nbsp;400 Poin</td>
           </tr>
           <tr>
             <td><strong>Harga/liter</strong></td>
@@ -56,15 +59,44 @@
               <form action="{{ url('transactions') }}" method="post">
                 @csrf
                 <input type="hidden" name="type" value="{{ $type }}">
+                <input type="hidden" name="member_id" id="member_id">
                 <div class="row">
                   <div class="col-md-4">
-                    <input type="text" class="form-control" name="police_number" placeholder="Plat Nomor">
+                    Liter :
                   </div>
+                </div>
+                <div class="row">
                   <div class="col-md-2">
-                    <input type="number" class="form-control" name="liters" placeholder="Liter">
+                    <input type="number" id="liter" class="form-control" name="liters" placeholder="Liter">
+                  </div>
+                  <div class="col-md-4" id="total_price">
+                    Rp. 0,-
                   </div>
                 </div>
                 <br>
+                <div class="row">
+                  <div class="col-md-4">
+                    Plat Nomor :
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3">
+                    <input type="text" id="police_number" class="form-control" name="police_number" placeholder="Plat Nomor">
+                  </div>
+                  <div class="col-md-4" id="member_name">
+                    Nama Member :
+                  </div>
+                  <div class="col-md-2" id="member_point">
+                    0 point
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-md-12" id="pay_with_point" style="display: none">
+                    Konversi uang ke Poin:
+                  </div>
+                </div>
+                <hr>
                 <div class="row">
                   <div class="col-md-12">
                     <button type="submit" class="btn btn-success">Submit</button>
@@ -79,4 +111,38 @@
 
   </div>
 </section><!-- End Portfolio Details Section -->
+@endsection
+
+@section('js')
+<script type="text/javascript">
+  $('#liter').on('change', () => {
+    $('#total_price').text('Rp. ' + {{ $price->price }} * $('#liter').val())
+  })
+
+  $('#police_number').on('change', () => {
+    $.ajax({
+      type: 'GET',
+      url: "{{ url('getMemberFromPoliceNumber') }}/" + $('#police_number').val(),
+      success: (data) => {
+        if (data != 0) {
+          $('#member_id').val(data.member_id)
+          $('#member_name').text("Nama Member :" + data.member_name)
+          $('#member_point').text(data.point_member + " poin")
+          if (Math.floor(data.point_member / 150) != 0) {
+            $('#pay_with_point').show()
+          }
+          $('#pay_with_point').text("Konversi uang ke Poin: " + (Math.floor(data.point_member / 150) * 10000))
+        }else {
+          $('#member_id').val(0)
+          $('#member_name').text("Nama Member : Tidak diketahui")
+          $('#member_point').text("0 poin")
+          $('#pay_with_point').hide()
+        }
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
+  })
+</script>
 @endsection

@@ -24,3 +24,6 @@ Route::post('reviews', 'ReviewController@store');
 Route::resource('prices', 'PriceController');
 Route::resource('employees', 'EmployeeController');
 Route::resource('outlets', 'OutletController');
+
+Route::get('getMemberFromPoliceNumber/{police_number}', 'FrontController@getMemberFromPoliceNumber');
+Route::get('invoice/{transaction_id}', 'FrontController@invoice');
