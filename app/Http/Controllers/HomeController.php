@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use Illuminate\Http\Request;
 
+use App\User;
 use App\Price;
 use App\Point;
 use App\Vehicle;
@@ -32,7 +33,7 @@ class HomeController extends Controller
         if (Auth::user()->role == 'admin') {
           return $this->index_admin();
         }elseif (Auth::user()->role == 'employee') {
-          return $this->index_admin();
+          return $this->index_employee();
         }else {
           return $this->index_member();
         }
@@ -54,7 +55,12 @@ class HomeController extends Controller
           'pertamax_turbo' => Price::where('type', 'Pertamax Turbo')->first()->price
         ];
 
-        return view('home', compact('prices'));
+        $employees = User::where('role', 'employee')->get();
+        foreach ($employees as $employee) {
+          $employee->point = round(Transaction::where('employee_id', $employee->id)->avg('stars'), 2);
+        }
+
+        return view('home', compact('prices', 'employees'));
     }
 
     public function index_member()

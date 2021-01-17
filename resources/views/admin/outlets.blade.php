@@ -8,7 +8,7 @@
 
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title">Daftar Harga</h4>
+        <h4 class="card-title">Daftar Outlet</h4>
       </div>
       <div class="card-body">
         <div class="row">
@@ -20,24 +20,20 @@
                 <tr>
                   <th>No.</th>
                   <th>Nama</th>
-                  <th>Tanggal</th>
-                  <th>Harga Modal</th>
-                  <th>Harga Jual</th>
+                  <th>Alamat</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 @php($salim = 1)
-                @foreach ($prices as $price)
+                @foreach ($outlets as $outlet)
                   <tr>
                     <td>{{ $salim++ }}</td>
-                    <td>{{ $price->type }}</td>
-                    <td>{{ $price->date }}</td>
-                    <td>{{ number_format($price->price) }}</td>
-                    <td>{{ number_format($price->cost) }}</td>
+                    <td>{{ $outlet->name }}</td>
+                    <td>{{ $outlet->address }}</td>
                     <td>
-                      <button type="button" class="btn btn-success btn_edit" onclick="showModelEdit({{ $price->id }}, '{{ $price->type }}', '{{ $price->cost }}', '{{ $price->price }}')">Edit</button>
-                      <button type="button" class="btn btn-danger btn_delete" onclick="showModelHapus({{ $price->id }})">Hapus</button>
+                      <button type="button" class="btn btn-success btn_edit" onclick="showModelEdit({{ $outlet->id }}, '{{ $outlet->name }}', '{{ $outlet->address }}')">Edit</button>
+                      <button type="button" class="btn btn-danger btn_delete" onclick="showModelHapus({{ $outlet->id }})">Hapus</button>
                     </td>
                   </tr>
                 @endforeach
@@ -52,40 +48,27 @@
 
 <!-- ======= Popup Section ======= -->
 <section id="modal_add" class="popup-graybox">
-  <div class="ebook-popup-sec" style="background: white; padding-bottom: 20px">
-    <h4 style="color: black">Form Harga</h4>
+  <div class="ebook-popup-sec" style="background: white; padding-bottom: 20px; height: 300px">
+    <h4 style="color: black">Form Outlet</h4>
     <hr>
 <!--      <h3 data-edit="text">Subscribe to our email newsletter and get updates on the latest tech tutorials and special offers!</h3>-->
     <div class="ebook-email-sec" style="text-align: left">
-      <form action="{{ url('prices') }}" method="post">
+      <form action="{{ url('outlets') }}" method="post">
         @csrf
         <div class="row">
           <div class="col-md-3">
-            Tipe :
+            Nama :
           </div>
-          <div class="col-md-3">
-            <select class="form-control" name="type">
-              <option value="solar">Solar</option>
-              <option value="pertalite">Pertalite</option>
-              <option value="pertamax">Pertamax</option>
-              <option value="pertamax_turbo">Pertamax Turbo</option>
-            </select>
+          <div class="col-md-7">
+            <input type="text" class="form-control" name="name" placeholder="Nama Outlet">
           </div>
         </div>
         <div class="row">
           <div class="col-md-3">
-            Harga Modal :
+            Alamat :
           </div>
-          <div class="col-md-3">
-            <input type="number" class="form-control" name="cost" value="Harga Modal">
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-3">
-            Harga Jual :
-          </div>
-          <div class="col-md-3">
-            <input type="number" class="form-control" name="price" value="Harga Jual">
+          <div class="col-md-7">
+            <input type="address" class="form-control" name="address" placeholder="Alamat">
           </div>
         </div>
         <hr>
@@ -104,41 +87,28 @@
 
 <!-- ======= Popup Section ======= -->
 <section id="modal_edit" class="popup-graybox">
-  <div class="ebook-popup-sec" style="background: white; padding-bottom: 20px">
-    <h4 style="color: black">Form Harga</h4>
+  <div class="ebook-popup-sec" style="background: white; padding-bottom: 20px; height: 300px">
+    <h4 style="color: black">Form Outlet</h4>
     <hr>
 <!--      <h3 data-edit="text">Subscribe to our email newsletter and get updates on the latest tech tutorials and special offers!</h3>-->
     <div class="ebook-email-sec" style="text-align: left">
-      <form id="form_edit" action="{{ url('prices') }}" method="post">
+      <form id="form_edit" action="{{ url('outlets') }}" method="post">
         @csrf
         @method('PUT')
         <div class="row">
           <div class="col-md-3">
-            Tipe :
+            Nama :
           </div>
-          <div class="col-md-3">
-            <select class="form-control" name="type" id="type">
-              <option value="solar">Solar</option>
-              <option value="pertalite">Pertalite</option>
-              <option value="pertamax">Pertamax</option>
-              <option value="pertamax_turbo">Pertamax Turbo</option>
-            </select>
+          <div class="col-md-7">
+            <input type="text" class="form-control" name="name" placeholder="Nama Outlet" id="outlet_name">
           </div>
         </div>
         <div class="row">
           <div class="col-md-3">
-            Harga Modal :
+            Alamat :
           </div>
-          <div class="col-md-3">
-            <input type="number" class="form-control" id="cost" name="cost" value="Harga Modal">
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-3">
-            Harga Jual :
-          </div>
-          <div class="col-md-3">
-            <input type="number" class="form-control" id="price" name="price" value="Harga Jual">
+          <div class="col-md-7">
+            <input type="address" class="form-control" name="address" placeholder="Alamat" id="outlet_address">
           </div>
         </div>
         <hr>
@@ -162,7 +132,7 @@
     <hr>
 <!--      <h3 data-edit="text">Subscribe to our email newsletter and get updates on the latest tech tutorials and special offers!</h3>-->
     <div class="ebook-email-sec" style="text-align: left">
-      <form id="form_delete" action="{{ url('prices') }}" method="post">
+      <form id="form_delete" action="{{ url('outlets') }}" method="post">
         @csrf
         @method('DELETE')
         <div class="row">
@@ -191,17 +161,16 @@
     $('#modal_add').show()
   })
 
-  showModelEdit = (id, type, cost, price) => {
+  showModelEdit = (id, name, address) => {
     $('#modal_edit').show()
-    $('#form_edit').attr('action', "{{ url('prices') }}/" + id)
-    $('#type').val(type)
-    $('#cost').val(cost)
-    $('#price').val(price)
+    $('#form_edit').attr('action', "{{ url('outlets') }}/" + id)
+    $('#outlet_name').val(name)
+    $('#outlet_address').val(address)
   }
 
   showModelHapus = (id) => {
     $('#modal_delete').show()
-    $('#form_delete').attr('action', "{{ url('prices') }}/" + id)
+    $('#form_delete').attr('action', "{{ url('outlets') }}/" + id)
   }
 
   $('.close-btn').on('click', () => {

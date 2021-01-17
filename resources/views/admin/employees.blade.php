@@ -8,7 +8,7 @@
 
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title">Daftar Harga</h4>
+        <h4 class="card-title">Daftar Karyawan</h4>
       </div>
       <div class="card-body">
         <div class="row">
@@ -20,24 +20,24 @@
                 <tr>
                   <th>No.</th>
                   <th>Nama</th>
-                  <th>Tanggal</th>
-                  <th>Harga Modal</th>
-                  <th>Harga Jual</th>
+                  <th>Outlet</th>
+                  <th>Email</th>
+                  <th>Tanggal Lahir</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 @php($salim = 1)
-                @foreach ($prices as $price)
+                @foreach ($users as $user)
                   <tr>
                     <td>{{ $salim++ }}</td>
-                    <td>{{ $price->type }}</td>
-                    <td>{{ $price->date }}</td>
-                    <td>{{ number_format($price->price) }}</td>
-                    <td>{{ number_format($price->cost) }}</td>
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->outlet->name }}</td>
+                    <td>{{ $user->email }}</td>
+                    <td>{{ $user->dob }}</td>
                     <td>
-                      <button type="button" class="btn btn-success btn_edit" onclick="showModelEdit({{ $price->id }}, '{{ $price->type }}', '{{ $price->cost }}', '{{ $price->price }}')">Edit</button>
-                      <button type="button" class="btn btn-danger btn_delete" onclick="showModelHapus({{ $price->id }})">Hapus</button>
+                      <button type="button" class="btn btn-success btn_edit" onclick="showModelEdit({{ $user->id }}, '{{ $user->name }}', {{ $user->outlet_id }}, '{{ $user->email }}', '{{ $user->dob }}')">Edit</button>
+                      <button type="button" class="btn btn-danger btn_delete" onclick="showModelHapus({{ $user->id }})">Hapus</button>
                     </td>
                   </tr>
                 @endforeach
@@ -52,40 +52,55 @@
 
 <!-- ======= Popup Section ======= -->
 <section id="modal_add" class="popup-graybox">
-  <div class="ebook-popup-sec" style="background: white; padding-bottom: 20px">
-    <h4 style="color: black">Form Harga</h4>
+  <div class="ebook-popup-sec" style="background: white; padding-bottom: 20px; height: 400px">
+    <h4 style="color: black">Form Karyawan</h4>
     <hr>
 <!--      <h3 data-edit="text">Subscribe to our email newsletter and get updates on the latest tech tutorials and special offers!</h3>-->
     <div class="ebook-email-sec" style="text-align: left">
-      <form action="{{ url('prices') }}" method="post">
+      <form action="{{ url('employees') }}" method="post">
         @csrf
         <div class="row">
           <div class="col-md-3">
-            Tipe :
+            Nama :
           </div>
+          <div class="col-md-7">
+            <input type="text" class="form-control" name="name" placeholder="Nama Karyawan">
+          </div>
+        </div>
+        <div class="row">
           <div class="col-md-3">
-            <select class="form-control" name="type">
-              <option value="solar">Solar</option>
-              <option value="pertalite">Pertalite</option>
-              <option value="pertamax">Pertamax</option>
-              <option value="pertamax_turbo">Pertamax Turbo</option>
+            Outlet :
+          </div>
+          <div class="col-md-7">
+            <select class="form-control" name="outlet_id">
+              @foreach ($outlets as $outlet)
+                <option value="{{ $outlet->id }}">{{ $outlet->name }}</option>
+              @endforeach
             </select>
           </div>
         </div>
         <div class="row">
           <div class="col-md-3">
-            Harga Modal :
+            Email :
           </div>
-          <div class="col-md-3">
-            <input type="number" class="form-control" name="cost" value="Harga Modal">
+          <div class="col-md-7">
+            <input type="email" class="form-control" name="email" placeholder="Email">
           </div>
         </div>
         <div class="row">
           <div class="col-md-3">
-            Harga Jual :
+            Tanggal Lahir :
           </div>
+          <div class="col-md-7">
+            <input type="date" class="form-control" name="dob" placeholder="Tanggal Lahir">
+          </div>
+        </div>
+        <div class="row">
           <div class="col-md-3">
-            <input type="number" class="form-control" name="price" value="Harga Jual">
+            Password :
+          </div>
+          <div class="col-md-7">
+            <input type="text" class="form-control" name="password" placeholder="Password">
           </div>
         </div>
         <hr>
@@ -104,41 +119,56 @@
 
 <!-- ======= Popup Section ======= -->
 <section id="modal_edit" class="popup-graybox">
-  <div class="ebook-popup-sec" style="background: white; padding-bottom: 20px">
-    <h4 style="color: black">Form Harga</h4>
+  <div class="ebook-popup-sec" style="background: white; padding-bottom: 20px; height: 400px">
+    <h4 style="color: black">Form Karyawan</h4>
     <hr>
 <!--      <h3 data-edit="text">Subscribe to our email newsletter and get updates on the latest tech tutorials and special offers!</h3>-->
     <div class="ebook-email-sec" style="text-align: left">
-      <form id="form_edit" action="{{ url('prices') }}" method="post">
+      <form id="form_edit" action="{{ url('employees') }}" method="post">
         @csrf
         @method('PUT')
         <div class="row">
           <div class="col-md-3">
-            Tipe :
+            Nama :
           </div>
+          <div class="col-md-7">
+            <input type="text" class="form-control" name="name" placeholder="Nama Karyawan" id="employee_name">
+          </div>
+        </div>
+        <div class="row">
           <div class="col-md-3">
-            <select class="form-control" name="type" id="type">
-              <option value="solar">Solar</option>
-              <option value="pertalite">Pertalite</option>
-              <option value="pertamax">Pertamax</option>
-              <option value="pertamax_turbo">Pertamax Turbo</option>
+            Outlet :
+          </div>
+          <div class="col-md-7">
+            <select class="form-control" name="outlet_id" id="outlet">
+              @foreach ($outlets as $outlet)
+                <option value="{{ $outlet->id }}">{{ $outlet->name }}</option>
+              @endforeach
             </select>
           </div>
         </div>
         <div class="row">
           <div class="col-md-3">
-            Harga Modal :
+            Email :
           </div>
-          <div class="col-md-3">
-            <input type="number" class="form-control" id="cost" name="cost" value="Harga Modal">
+          <div class="col-md-7">
+            <input type="email" class="form-control" name="email" placeholder="Email" id="employee_email">
           </div>
         </div>
         <div class="row">
           <div class="col-md-3">
-            Harga Jual :
+            Tanggal Lahir :
           </div>
+          <div class="col-md-7">
+            <input type="date" class="form-control" name="dob" placeholder="Tanggal Lahir" id="employee_dob">
+          </div>
+        </div>
+        <div class="row">
           <div class="col-md-3">
-            <input type="number" class="form-control" id="price" name="price" value="Harga Jual">
+            Password :
+          </div>
+          <div class="col-md-7">
+            <input type="text" class="form-control" name="password" placeholder="Password">
           </div>
         </div>
         <hr>
@@ -162,7 +192,7 @@
     <hr>
 <!--      <h3 data-edit="text">Subscribe to our email newsletter and get updates on the latest tech tutorials and special offers!</h3>-->
     <div class="ebook-email-sec" style="text-align: left">
-      <form id="form_delete" action="{{ url('prices') }}" method="post">
+      <form id="form_delete" action="{{ url('users') }}" method="post">
         @csrf
         @method('DELETE')
         <div class="row">
@@ -191,17 +221,18 @@
     $('#modal_add').show()
   })
 
-  showModelEdit = (id, type, cost, price) => {
+  showModelEdit = (id, name, outlet, email, dob) => {
     $('#modal_edit').show()
-    $('#form_edit').attr('action', "{{ url('prices') }}/" + id)
-    $('#type').val(type)
-    $('#cost').val(cost)
-    $('#price').val(price)
+    $('#form_edit').attr('action', "{{ url('employees') }}/" + id)
+    $('#employee_name').val(name)
+    $('#outlet').val(outlet)
+    $('#employee_email').val(email)
+    $('#employee_dob').val(dob)
   }
 
   showModelHapus = (id) => {
     $('#modal_delete').show()
-    $('#form_delete').attr('action', "{{ url('prices') }}/" + id)
+    $('#form_delete').attr('action', "{{ url('employees') }}/" + id)
   }
 
   $('.close-btn').on('click', () => {

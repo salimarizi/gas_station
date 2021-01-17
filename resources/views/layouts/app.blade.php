@@ -78,8 +78,13 @@
       <nav class="nav-menu d-none d-lg-block">
         <ul>
           <li class="active"><a href="#header">Beranda</a></li>
-          <li><a href="#cta">Member & Penilaian</a></li>
-          <li><a href="#team">Penghargaan Pegawai</a></li>
+          @if (@Auth::user()->role == 'admin')
+            <li><a href="{{ url('employees') }}">Karyawan</a></li>
+            <li><a href="{{ url('outlets') }}">Outlet</a></li>
+          @else
+            <li><a href="#team">Penghargaan Pegawai</a></li>
+            <li><a href="#contact">Hubungi Kami</a></li>
+          @endif
           <!-- <li><a href="#">Portfolio</a></li> -->
           <!-- <li><a href="#">Team</a></li>
           <li><a href="#">Pricing</a></li>
@@ -101,7 +106,6 @@
               <li><a href="#">Drop Down 4</a></li>
             </ul>
           </li> -->
-          <li><a href="#contact">Hubungi Kami</a></li>
 
         </ul>
       </nav><!-- .nav-menu -->

@@ -22,3 +22,5 @@ Route::post('transactions', 'FrontController@store_transactions');
 Route::post('vehicles', 'VehicleController@store');
 Route::post('reviews', 'ReviewController@store');
 Route::resource('prices', 'PriceController');
+Route::resource('employees', 'EmployeeController');
+Route::resource('outlets', 'OutletController');
