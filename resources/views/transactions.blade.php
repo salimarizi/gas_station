@@ -1,5 +1,36 @@
 @extends('layouts.app')
 
+@section('css')
+  <style media="screen">
+    .custom-switch-lg .custom-control-label::before {
+      left: -2.25rem;
+      width: 3rem;
+      border-radius: 1.5rem;
+    }
+
+    .custom-switch-lg .custom-control-label::after {
+      top: calc(.25rem + 3px);
+      left: calc(-2.25rem + 4px);
+      width: calc(1.5rem - 6px);
+      height: calc(1.5rem - 6px);
+      border-radius: 1.5rem;
+    }
+
+    .custom-switch-lg .custom-control-input:checked ~ .custom-control-label::after {
+      transform: translateX(1.4rem);
+    }
+
+    .custom-switch-lg .custom-control-label::before {
+      height: 1.5rem;
+    }
+
+    .custom-switch-lg .custom-control-label {
+      padding-left: 1.5rem;
+      line-height: 1.7rem;
+    }
+  </style>
+@endsection
+
 @section('content')
 <!-- ======= Breadcrumbs ======= -->
 <section id="breadcrumbs" class="breadcrumbs">
@@ -92,8 +123,14 @@
                 </div>
                 <br>
                 <div class="row">
-                  <div class="col-md-12" id="pay_with_point" style="display: none">
+                  <div class="col-md-4" id="pay_with_point" style="display: none">
                     Konversi uang ke Poin:
+                  </div>
+                  <div class="col-md-2" id="switch_pay_with_point" style="display: none">
+                    <p class="custom-control custom-switch custom-switch-lg">
+                      <input class="custom-control-input" id="customSwitch7" type="checkbox" name="use_point" checked>
+                      <label class="custom-control-label font-italic" for="customSwitch7"></label>
+                    </p>
                   </div>
                 </div>
                 <hr>
@@ -130,7 +167,9 @@
           $('#member_point').text(data.point_member + " poin")
           if (Math.floor(data.point_member / 150) != 0) {
             $('#pay_with_point').show()
+            $('#switch_pay_with_point').show()
           }
+
           $('#pay_with_point').text("Konversi uang ke Poin: " + (Math.floor(data.point_member / 150) * 10000))
         }else {
           $('#member_id').val(0)

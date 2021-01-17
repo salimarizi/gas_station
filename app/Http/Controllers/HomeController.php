@@ -42,8 +42,32 @@ class HomeController extends Controller
     public function index_admin()
     {
         $prices = Price::orderBy('created_at', 'desc')->get();
+        $startDate = Transaction::orderBy('created_at')->first()->created_at->format('Y-m-d');
+        $endDate = Transaction::orderBy('created_at', 'desc')->first()->created_at->format('Y-m-d');
 
-        return view('admin/index', compact('prices'));
+        $begin = new \DateTime($startDate);
+        $end = new \DateTime(date('Y-m-d', strtotime('+1 day', strtotime($endDate))));
+
+        $interval = \DateInterval::createFromDateString('1 day');
+        $period = new \DatePeriod($begin, $interval, $end);
+
+        $chart_datas = [];
+        foreach ($period as $dt) {
+            $cost = 0; $price = 0;
+
+            foreach (Transaction::whereDate('created_at', $dt->format("Y-m-d"))->get() as $transaction) {
+              $cost += $transaction->price->cost * $transaction->liters;
+              $price += $transaction->price->price * $transaction->liters;
+            }
+
+            array_push($chart_datas, [
+              'date' => $dt->format("Y-m-d"),
+              'cost' => $cost,
+              'price' => $price
+            ]);
+        }
+
+        return view('admin/index', compact('prices', 'chart_datas'));
     }
 
     public function index_employee()
