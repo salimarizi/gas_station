@@ -88,14 +88,14 @@
     </div>
 
     <div class="row">
-      @foreach ($employees as $employee)
+      @foreach ($best_employees as $employee)
         <div class="col-lg-6 mt-4" data-aos="fade-up" data-aos-delay="300">
           <div class="member d-flex align-items-start">
             <div class="pic"><img src="assets/img/team/team-3.jpg" class="img-fluid" alt=""></div>
             <div class="member-info">
               <h4>{{ $employee->name }}</h4>
-              <span>{{ $employee->outlet->name }}</span>
-              <p>Dengan perolehan poin sebesar {{ $employee->point }}/5</p>
+              <span>{{ $employee->outlet_name }}</span>
+              <p>Dengan perolehan poin sebesar {{ $employee->average_points }}/5</p>
               <div class="social">
                 <a href=""><i class="ri-twitter-fill"></i></a>
                 <a href=""><i class="ri-facebook-fill"></i></a>

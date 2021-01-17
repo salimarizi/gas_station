@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use Illuminate\Http\Request;
 
+use DB;
 use App\User;
 use App\Price;
 use App\Point;
@@ -79,12 +80,33 @@ class HomeController extends Controller
           'pertamax_turbo' => Price::where('type', 'Pertamax Turbo')->first()->price
         ];
 
-        $employees = User::where('role', 'employee')->get();
-        foreach ($employees as $employee) {
-          $employee->point = round(Transaction::where('employee_id', $employee->id)->avg('stars'), 2);
+        $employees = DB::select("
+          SELECT users.id, users.outlet_id, outlets.name AS outlet_name, users.name, ROUND(IFNULL(AVG(transactions.stars), 0), 2) AS average_points
+          FROM users
+          INNER JOIN outlets ON users.outlet_id = outlets.id
+          LEFT JOIN transactions ON users.id = transactions.employee_id
+          WHERE users.role = 'employee'
+          GROUP BY users.id
+          ORDER BY average_points DESC
+        ");
+
+        $best_employees = [];
+
+        for ($i=0; $i < count($employees); $i++) {
+          if ($i != 0) {
+            if ($employees[$i-1]->outlet_id != $employees[$i]->outlet_id) {
+              array_push($best_employees, $employees[$i]);
+            }elseif (($employees[$i-1]->outlet_id == $employees[$i]->outlet_id) && ($employees[$i-1]->average_points == $employees[$i]->average_points)) {
+              array_push($best_employees, $employees[$i]);
+            }else {
+              continue;
+            }
+          }else {
+            array_push($best_employees, $employees[$i]);
+          }
         }
 
-        return view('home', compact('prices', 'employees'));
+        return view('home', compact('prices', 'best_employees'));
     }
 
     public function index_member()
