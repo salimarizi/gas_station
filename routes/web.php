@@ -27,3 +27,5 @@ Route::resource('outlets', 'OutletController');
 
 Route::get('getMemberFromPoliceNumber/{police_number}', 'FrontController@getMemberFromPoliceNumber');
 Route::get('invoice/{transaction_id}', 'FrontController@invoice');
+
+Route::get('reminder', 'SendEmailController@index');

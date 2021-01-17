@@ -128,8 +128,8 @@
                   </div>
                   <div class="col-md-2" id="switch_pay_with_point" style="display: none">
                     <p class="custom-control custom-switch custom-switch-lg">
-                      <input class="custom-control-input" id="customSwitch7" type="checkbox" name="use_point" checked>
-                      <label class="custom-control-label font-italic" for="customSwitch7"></label>
+                      <input class="custom-control-input" id="customSwitch7" type="checkbox" name="use_point">
+                      <label class="custom-control-label font-italic" for="customSwitch7">Gunakan Poin?</label>
                     </p>
                   </div>
                 </div>

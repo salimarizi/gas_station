@@ -13,7 +13,8 @@ class Transaction extends Model
       'police_number',
       'stars',
       'reviews',
-      'liters'
+      'liters',
+      'discount'
     ];
 
     public function user()

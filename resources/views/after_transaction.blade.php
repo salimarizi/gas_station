@@ -59,7 +59,7 @@
                                       <p> <strong>Diskon: </strong> </p>
                                   </td>
                                   <td class="text-right">
-                                      <p> <strong><i class="fas fa-rupee-sign" area-hidden="true"></i> - </strong> </p>
+                                      <p> <strong><i class="fas fa-rupee-sign" area-hidden="true"></i> {{ $transaction->discount ? number_format($transaction->discount) : '-' }} </strong> </p>
                                   </td>
                               </tr>
                               <tr style="color: #f6b024;">
@@ -69,7 +69,7 @@
                                       <h4><strong>Total:</strong></h4>
                                   </td>
                                   <td class="text-right">
-                                      <h4><strong><i class="fas fa-rupee-sign" area-hidden="true"></i> {{ number_format($transaction->liters * $transaction->price->price) }} </strong></h4>
+                                      <h4><strong><i class="fas fa-rupee-sign" area-hidden="true"></i> {{ number_format($transaction->liters * $transaction->price->price - $transaction->discount) }} </strong></h4>
                                   </td>
                               </tr>
                               </tbody>

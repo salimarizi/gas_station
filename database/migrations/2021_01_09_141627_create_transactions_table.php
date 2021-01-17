@@ -20,8 +20,9 @@ class CreateTransactionsTable extends Migration
             $table->bigInteger('price_id')->unsigned()->index();
             $table->string('police_number');
             $table->enum('stars', ['1', '2', '3', '4', '5'])->default('3');
-            $table->text('reviews');
+            $table->text('reviews')->nullable();
             $table->double('liters');
+            $table->double('discount')->nullable();
             $table->timestamps();
 
             $table->foreign('employee_id')

@@ -62,6 +62,18 @@ class FrontController extends Controller
         $data['outlet_id'] = Auth::user()->outlet_id;
         $data['price_id'] = Price::where('type', $request->type == 'pertamax_turbo' ? "Pertamax Turbo" : ucwords($request->type))->first()->id;
 
+        if ($request->has('member_id') && $request->has('use_point')) {
+          $member = User::find($request->member_id);
+          $point_member = $member->points()->whereDate('date', '>' , now()->subYear())->sum('point');
+          $data['discount'] = floor($point_member / 150) * 10000;
+
+          Point::create([
+            'user_id' => $request->member_id,
+            'date' => date('Y-m-d H:i:s'),
+            'point' => -($point_member - ($point_member % 150))
+          ]);
+        }
+
         $transaction = Transaction::create($data);
 
         if ($request->member_id) {
@@ -87,11 +99,13 @@ class FrontController extends Controller
               $point *= 2;
             }
 
-            Point::create([
-              'user_id' => $request->member_id,
-              'date' => date('Y-m-d H:i:s'),
-              'point' => $point
-            ]);
+            if (!$request->has('use_point')) {
+              Point::create([
+                'user_id' => $request->member_id,
+                'date' => date('Y-m-d H:i:s'),
+                'point' => $point
+              ]);
+            }
         }
 
         return redirect('invoice/' . $transaction->id);
